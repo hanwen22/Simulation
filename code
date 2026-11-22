@@ -1,0 +1,169 @@
+sum_vect <- function(x, y) {
+  return(x + y)
+}
+
+growth_matrix <- matrix(
+  c(0.1, 0.0, 0.0, 0.0,
+    0.5, 0.4, 0.0, 0.0,
+    0.0, 0.4, 0.7, 0.0,
+    0.0, 0.0, 0.25, 0.4),
+  nrow = 4, ncol = 4, byrow = TRUE
+)
+
+reproduction_matrix <- matrix(
+  c(0.0, 0.0, 0.0, 2.6,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0),
+  nrow = 4, ncol = 4, byrow = TRUE
+)
+
+projection_matrix <- growth_matrix + reproduction_matrix
+
+clutch_distribution <- c(
+  0.06, 0.08, 0.13, 0.15, 0.16,
+  0.18, 0.15, 0.06, 0.03
+)
+
+simulation_length <- 24
+n_simulations <- 10
+
+initial_sizes <- c(10, 100)
+
+initial_states <- list(
+  c(0, 0, 0, 10),
+  c(0, 0, 0, 100)
+)
+
+deterministic_results <- list()
+
+for (i in seq_along(initial_sizes)) {
+  
+  deterministic_results[[i]] <- deterministic_simulation(
+    initial_state = initial_states[[i]],
+    projection_matrix = projection_matrix,
+    simulation_length = simulation_length
+  )
+  
+}
+
+set.seed(123)
+
+stochastic_results <- list()
+
+for (i in seq_along(initial_sizes)) {
+  
+  stochastic_results[[i]] <- matrix(
+    NA,
+    nrow = simulation_length + 1,
+    ncol = n_simulations
+  )
+  
+  for (j in 1:n_simulations) {
+    
+    stochastic_results[[i]][, j] <- stochastic_simulation(
+      initial_state = initial_states[[i]],
+      growth_matrix = growth_matrix,
+      reproduction_matrix = reproduction_matrix,
+      clutch_distribution = clutch_distribution,
+      simulation_length = simulation_length
+    )
+    
+  }
+}
+
+save(
+  deterministic_results,
+  stochastic_results,
+  initial_sizes,
+  simulation_length,
+  file = "part1_panelA_data.RDA"
+)
+
+all_values <- c(
+  unlist(deterministic_results),
+  unlist(stochastic_results)
+)
+
+positive_values <- all_values[all_values > 0]
+
+pdf(
+  "part1_panelA.pdf",
+  width = 9,
+  height = 6
+)
+
+par(mar = c(5, 5, 3, 2))
+
+plot(
+  NA,
+  xlim = c(0, simulation_length),
+  ylim = range(positive_values),
+  log = "y",
+  xlab = "Time steps",
+  ylab = "Total population size (log scale)",
+  main = "Deterministic and stochastic population dynamics"
+)
+
+for (j in 1:n_simulations) {
+  
+  values <- stochastic_results[[1]][, j]
+  values[values <= 0] <- NA
+  
+  lines(
+    0:simulation_length,
+    values,
+    col = "blue",
+    lty = 2
+  )
+}
+
+for (j in 1:n_simulations) {
+  
+  values <- stochastic_results[[2]][, j]
+  values[values <= 0] <- NA
+  
+  lines(
+    0:simulation_length,
+    values,
+    col = "red",
+    lty = 2
+  )
+}
+
+lines(
+  0:simulation_length,
+  deterministic_results[[1]],
+  col = "blue",
+  lty = 1,
+  lwd = 2
+)
+
+lines(
+  0:simulation_length,
+  deterministic_results[[2]],
+  col = "red",
+  lty = 1,
+  lwd = 2
+)
+
+legend(
+  "topleft",
+  legend = c(
+    "Initial population = 10 (deterministic)",
+    "Initial population = 10 (stochastic)",
+    "Initial population = 100 (deterministic)",
+    "Initial population = 100 (stochastic)"
+  ),
+  col = c("blue", "blue", "red", "red"),
+  lty = c(1, 2, 1, 2),
+  lwd = c(2, 1, 2, 1),
+  bty = "n",
+  cex = 0.8
+)
+
+dev.off()
+
+cat("Panel A simulations completed.\n")
+cat("Results saved to part1_panelA_data.RDA\n")
+cat("Figure saved to part1_panelA.pdf\n")
