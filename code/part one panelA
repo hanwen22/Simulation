@@ -167,3 +167,4 @@ dev.off()
 cat("Panel A simulations completed.\n")
 cat("Results saved to part1_panelA_data.RDA\n")
 cat("Figure saved to part1_panelA.pdf\n")
+
