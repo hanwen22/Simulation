@@ -15,3 +15,6 @@
 # - When the initial population is 100, the fluctuations are relatively small, and the overall situation is more stable.
 # Therefore, my conclusion is Small populations are more vulnerable to stochastic fluctuations and extinction.
 
+# 11.23（12:00）：Part one panelB
+# I reorganized the structure of my entire assignment. I created folders named RDA, code, and results, and placed the corresponding files in the respective folders.
+# I also completed the simulation work for part one, panel B. First, I prepared an R script for the HPC simulation based on the requirements of the problem. Each task used a different random seed. Then, I submitted these tasks to the HPC. The results ran smoothly. Next, I used AI to write an independent R script for merging the simulation results. At step 120, I calculated the extinction probability and generated the charts for Group B. Next, I plan to run the analysis script to check the extinction probability, view the charts, and combine Panels A and B into the required double-panel graph.

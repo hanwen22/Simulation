@@ -1,0 +1,85 @@
+cat > part1_panelB.R <<'EOF'
+rm(list = ls())
+graphics.off()
+
+source("Demographic.R")
+
+sum_vect <- function(x, y) {
+  x + y
+}
+
+iter <- as.numeric(Sys.getenv("PBS_ARRAY_INDEX"))
+
+if (is.na(iter)) {
+  stop("PBS_ARRAY_INDEX is missing")
+}
+
+set.seed(iter)
+
+growth_matrix <- matrix(
+  c(0.1, 0, 0, 0,
+    0.5, 0.4, 0, 0,
+    0, 0.4, 0.7, 0,
+    0, 0, 0.25, 0.4),
+  nrow = 4, ncol = 4, byrow = TRUE
+)
+
+reproduction_matrix <- matrix(
+  c(0, 0, 0, 2.6,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0),
+  nrow = 4, ncol = 4, byrow = TRUE
+)
+
+clutch_distribution <- c(
+  0.06, 0.08, 0.13, 0.15, 0.16,
+  0.18, 0.15, 0.06, 0.03
+)
+
+initial_sizes <- c(3, 10, 30, 100)
+simulation_length <- 120
+simulations_per_job <- 40
+
+results <- list()
+
+for (size in initial_sizes) {
+
+  initial_state <- c(0, 0, 0, size)
+
+  simulations <- vector("list", simulations_per_job)
+
+  for (i in seq_len(simulations_per_job)) {
+
+    simulations[[i]] <- stochastic_simulation(
+      initial_state,
+      growth_matrix,
+      reproduction_matrix,
+      clutch_distribution,
+      simulation_length
+    )
+
+  }
+
+  results[[as.character(size)]] <- simulations
+}
+
+dir.create("results", showWarnings = FALSE)
+
+output_file <- paste0(
+  "results/part1_hpc_results_",
+  iter,
+  ".RDA"
+)
+
+save(
+  results,
+  initial_sizes,
+  simulation_length,
+  simulations_per_job,
+  iter,
+  file = output_file
+)
+
+cat("Job", iter, "completed:", output_file, "\n")
+EOF
