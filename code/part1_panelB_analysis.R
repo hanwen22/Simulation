@@ -91,7 +91,6 @@ write.csv(
 
 save(
   summary_data,
-  all_simulations,
   file = "results/part1_panelB_summary.RDA"
 )
 
