@@ -4,7 +4,6 @@
 rm(list = ls())
 graphics.off()
 
-# 1. Find the 20 HPC result files
 files <- list.files(
   "RDA",
   pattern = "^part1_hpc_results_[0-9]+\\.RDA$",
@@ -15,7 +14,6 @@ if (length(files) != 20) {
   stop(paste("Expected 20 RDA files, found", length(files)))
 }
 
-# 2. Set up storage for the simulations
 initial_sizes <- c(3, 10, 30, 100)
 
 all_simulations <- setNames(
@@ -23,7 +21,6 @@ all_simulations <- setNames(
   as.character(initial_sizes)
 )
 
-# 3. Read all 20 RDA files
 for (file in files) {
 
   env <- new.env()
@@ -48,7 +45,6 @@ for (file in files) {
   }
 }
 
-# 4. Calculate extinction probabilities at step 120
 extinct_counts <- numeric(length(initial_sizes))
 total_counts <- numeric(length(initial_sizes))
 
@@ -72,7 +68,6 @@ for (i in seq_along(initial_sizes)) {
   total_counts[i] <- length(extinction)
 }
 
-# 5. Create the summary table
 summary_data <- data.frame(
   initial_population = initial_sizes,
   extinct_count = extinct_counts,
@@ -82,7 +77,6 @@ summary_data <- data.frame(
 
 print(summary_data)
 
-# 6. Save the summary data
 write.csv(
   summary_data,
   "results/part1_panelB_summary.csv",
@@ -94,7 +88,6 @@ save(
   file = "results/part1_panelB_summary.RDA"
 )
 
-# 7. Plot Panel B
 pdf("results/part1_panelB.pdf", width = 7, height = 5)
 
 par(mar = c(5, 5, 2, 1))

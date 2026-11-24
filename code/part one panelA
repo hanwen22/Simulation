@@ -90,10 +90,10 @@ positive_values <- all_values[all_values > 0]
 pdf(
   "part1_panelA.pdf",
   width = 9,
-  height = 6
+  height = 8
 )
 
-par(mar = c(5, 5, 3, 2))
+par(mar = c(5, 6, 5, 2))
 
 plot(
   NA,
@@ -159,7 +159,8 @@ legend(
   lty = c(1, 2, 1, 2),
   lwd = c(2, 1, 2, 1),
   bty = "n",
-  cex = 0.8
+  cex = 0.85,
+  bg = "white"
 )
 
 dev.off()

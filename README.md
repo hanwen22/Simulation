@@ -18,3 +18,6 @@
 # 11.23（12:00）：Part one panelB
 # I reorganized the structure of my entire assignment. I created folders named RDA, code, and results, and placed the corresponding files in the respective folders.
 # I also completed the simulation work for part one, panel B. First, I prepared an R script for the HPC simulation based on the requirements of the problem. Each task used a different random seed. Then, I submitted these tasks to the HPC. The results ran smoothly. Next, I used AI to write an independent R script for merging the simulation results. At step 120, I calculated the extinction probability and generated the charts for Group B. Next, I plan to run the analysis script to check the extinction probability, view the charts, and combine Panels A and B into the required double-panel graph.
+
+# 11.24(23:02) : part one PanelB
+# I noticed that there were overlapping parts between the graphics and the text in my panel A chart, and there was too much blank space above the chart in panel B, which made it look very unattractive. So I changed the maximum value of the y-axis to make the chart clearer and more understandable. Then I used AI to combine the two charts. Next, I will proceed to further complete the content of part one. Based on the charts and the obtained data, I will analyze and summarize, and then start writing.
