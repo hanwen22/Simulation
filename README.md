@@ -29,3 +29,11 @@ I checked the log files. The .e files were empty, indicating that no error messa
 - `Part1PanelB_combined.o` – Combined standard output log.
 - `Part1PanelB_combined.e` – Combined standard error log.
 - `part1_submit.pbs` – PBS job submission script.
+
+# 11.26(20:31) : Part one
+
+Combines Panel A and Panel B into a single publication figure and complete the writing for Part One.
+
+## Files
+input: plot_figure_AB.R RDA/part1_panelA_data.RDA | Panel A data RDA/part1_hpc_results_1.RDA 20.RDA
+output: Figure_AB_combined.pdf
